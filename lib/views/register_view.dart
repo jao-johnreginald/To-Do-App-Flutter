@@ -1,14 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class LoginView extends StatefulWidget {
-  const LoginView({super.key});
+class RegisterView extends StatefulWidget {
+  const RegisterView({super.key});
 
   @override
-  State<LoginView> createState() => _LoginViewState();
+  State<RegisterView> createState() => _RegisterViewState();
 }
 
-class _LoginViewState extends State<LoginView> {
+class _RegisterViewState extends State<RegisterView> {
   late final TextEditingController _email;
   late final TextEditingController _password;
 
@@ -30,7 +30,7 @@ class _LoginViewState extends State<LoginView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Login"),
+        title: const Text("Register"),
       ),
       body: Column(
         children: [
@@ -49,23 +49,23 @@ class _LoginViewState extends State<LoginView> {
             decoration: const InputDecoration(hintText: "Password"),
           ),
           TextButton(
-            onPressed: login,
-            child: const Text("Login"),
+            onPressed: register,
+            child: const Text("Register"),
           ),
           TextButton(
-              onPressed: navigateToRegisterView,
-              child: const Text("Not registered yet? Register here!"))
+              onPressed: navigateToLoginView,
+              child: const Text("Already registered? Login here!"))
         ],
       ),
     );
   }
 
-  void login() async {
+  void register() async {
     final email = _email.text;
     final password = _password.text;
     try {
       final userCredential = await FirebaseAuth.instance
-          .signInWithEmailAndPassword(email: email, password: password);
+          .createUserWithEmailAndPassword(email: email, password: password);
     } on FirebaseAuthException catch (e) {
       print(e.code);
     } catch (e) {
@@ -73,8 +73,7 @@ class _LoginViewState extends State<LoginView> {
     }
   }
 
-  void navigateToRegisterView() {
-    Navigator.of(context)
-        .pushNamedAndRemoveUntil("/register/", (route) => false);
+  void navigateToLoginView() {
+    Navigator.of(context).pushNamedAndRemoveUntil("/login/", (route) => false);
   }
 }
