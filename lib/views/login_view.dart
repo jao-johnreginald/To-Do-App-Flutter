@@ -1,38 +1,17 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:todo_app_flutter/firebase_options.dart';
-import 'package:todo_app_flutter/views/login_view.dart';
 
-void main() {
-  WidgetsFlutterBinding.ensureInitialized();
-  runApp(const MyApp());
-}
+import '../firebase_options.dart';
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class LoginView extends StatefulWidget {
+  const LoginView({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const LoginView(),
-    );
-  }
+  State<LoginView> createState() => _LoginViewState();
 }
 
-class RegisterView extends StatefulWidget {
-  const RegisterView({super.key});
-
-  @override
-  State<RegisterView> createState() => _RegisterViewState();
-}
-
-class _RegisterViewState extends State<RegisterView> {
+class _LoginViewState extends State<LoginView> {
   late final TextEditingController _email;
   late final TextEditingController _password;
 
@@ -54,7 +33,7 @@ class _RegisterViewState extends State<RegisterView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Login"),
+        title: const Text("Register"),
       ),
       body: FutureBuilder(
         future: Firebase.initializeApp(
@@ -79,8 +58,8 @@ class _RegisterViewState extends State<RegisterView> {
                     decoration: const InputDecoration(hintText: "Password"),
                   ),
                   TextButton(
-                    onPressed: register,
-                    child: const Text("Register"),
+                    onPressed: login,
+                    child: const Text("Login"),
                   ),
                 ],
               );
@@ -92,12 +71,12 @@ class _RegisterViewState extends State<RegisterView> {
     );
   }
 
-  void register() async {
+  void login() async {
     final email = _email.text;
     final password = _password.text;
     try {
       final userCredential = await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(email: email, password: password);
+          .signInWithEmailAndPassword(email: email, password: password);
     } on FirebaseAuthException catch (e) {
       print(e.code);
     } catch (e) {
