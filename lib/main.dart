@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:todo_app_flutter/firebase_options.dart';
 import 'package:todo_app_flutter/views/login_view.dart';
 import 'package:todo_app_flutter/views/register_view.dart';
+import 'package:todo_app_flutter/views/todos_view.dart';
 import 'package:todo_app_flutter/views/verify_email_view.dart';
 
 void main() {
@@ -25,7 +26,8 @@ class MyApp extends StatelessWidget {
       home: const HomePage(),
       routes: {
         "/login/": (context) => const LoginView(),
-        "/register/": (context) => const RegisterView()
+        "/register/": (context) => const RegisterView(),
+        "/verify_email/": (context) => const VerifyEmailView()
       },
     );
   }
@@ -45,7 +47,7 @@ class HomePage extends StatelessWidget {
             final user = FirebaseAuth.instance.currentUser;
             if (user != null) {
               if (user.emailVerified) {
-                return const Text("Email is verified");
+                return const TodosView();
               } else {
                 return const VerifyEmailView();
               }

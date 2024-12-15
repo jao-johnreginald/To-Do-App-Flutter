@@ -54,7 +54,7 @@ class _RegisterViewState extends State<RegisterView> {
           ),
           TextButton(
               onPressed: navigateToLoginView,
-              child: const Text("Already registered? Login here!"))
+              child: const Text("Already registered? Verify your email here!"))
         ],
       ),
     );
@@ -74,6 +74,7 @@ class _RegisterViewState extends State<RegisterView> {
   }
 
   void navigateToLoginView() {
-    Navigator.of(context).pushNamedAndRemoveUntil("/login/", (route) => false);
+    Navigator.of(context)
+        .pushNamedAndRemoveUntil("/verify_email/", (_) => false);
   }
 }
