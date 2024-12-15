@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:todo_app_flutter/constants/routes.dart';
 
 enum MenuAction { logout }
 
@@ -24,7 +25,7 @@ class _TodosViewState extends State<TodosView> {
                   final shouldLogout = await showLogOutDialog(context);
                   if (shouldLogout) {
                     await FirebaseAuth.instance.signOut();
-                    logout();
+                    navigateToLoginView();
                   }
                   break;
               }
@@ -70,7 +71,7 @@ class _TodosViewState extends State<TodosView> {
     ).then((value) => value ?? false);
   }
 
-  void logout() {
-    Navigator.of(context).pushNamedAndRemoveUntil("/login/", (_) => false);
+  void navigateToLoginView() {
+    Navigator.of(context).pushNamedAndRemoveUntil(loginRoute, (_) => false);
   }
 }

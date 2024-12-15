@@ -2,6 +2,7 @@ import 'dart:developer' as dartdev show log;
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:todo_app_flutter/constants/routes.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -78,10 +79,10 @@ class _LoginViewState extends State<LoginView> {
   }
 
   void navigateToTodosView() {
-    Navigator.of(context).pushNamedAndRemoveUntil("/todos/", (_) => false);
+    Navigator.of(context).pushNamedAndRemoveUntil(todosRoute, (_) => false);
   }
 
   void navigateToRegisterView() {
-    Navigator.of(context).pushNamedAndRemoveUntil("/register/", (_) => false);
+    Navigator.of(context).pushNamedAndRemoveUntil(registerRoute, (_) => false);
   }
 }

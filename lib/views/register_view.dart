@@ -2,6 +2,7 @@ import 'dart:developer' as dartdev show log;
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:todo_app_flutter/constants/routes.dart';
 
 class RegisterView extends StatefulWidget {
   const RegisterView({super.key});
@@ -55,7 +56,7 @@ class _RegisterViewState extends State<RegisterView> {
             child: const Text("Register"),
           ),
           TextButton(
-            onPressed: navigateToLoginView,
+            onPressed: navigateToVerifyEmailView,
             child: const Text("Already registered? Verify your email here!"),
           )
         ],
@@ -75,8 +76,8 @@ class _RegisterViewState extends State<RegisterView> {
     }
   }
 
-  void navigateToLoginView() {
+  void navigateToVerifyEmailView() {
     Navigator.of(context)
-        .pushNamedAndRemoveUntil("/verify_email/", (_) => false);
+        .pushNamedAndRemoveUntil(verifyEmailRoute, (_) => false);
   }
 }
