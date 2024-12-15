@@ -1,3 +1,5 @@
+import 'dart:developer' as dartdev show log;
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -53,8 +55,9 @@ class _LoginViewState extends State<LoginView> {
             child: const Text("Login"),
           ),
           TextButton(
-              onPressed: navigateToRegisterView,
-              child: const Text("Not registered yet? Register here!"))
+            onPressed: navigateToRegisterView,
+            child: const Text("Not registered yet? Register here!"),
+          )
         ],
       ),
     );
@@ -64,17 +67,21 @@ class _LoginViewState extends State<LoginView> {
     final email = _email.text;
     final password = _password.text;
     try {
-      final userCredential = await FirebaseAuth.instance
-          .signInWithEmailAndPassword(email: email, password: password);
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      navigateToTodosView();
     } on FirebaseAuthException catch (e) {
-      print(e.code);
-    } catch (e) {
-      print(e.runtimeType);
+      dartdev.log(e.code);
     }
   }
 
+  void navigateToTodosView() {
+    Navigator.of(context).pushNamedAndRemoveUntil("/todos/", (_) => false);
+  }
+
   void navigateToRegisterView() {
-    Navigator.of(context)
-        .pushNamedAndRemoveUntil("/register/", (route) => false);
+    Navigator.of(context).pushNamedAndRemoveUntil("/register/", (_) => false);
   }
 }

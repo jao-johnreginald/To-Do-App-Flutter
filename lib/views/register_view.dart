@@ -1,3 +1,5 @@
+import 'dart:developer' as dartdev show log;
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -53,8 +55,9 @@ class _RegisterViewState extends State<RegisterView> {
             child: const Text("Register"),
           ),
           TextButton(
-              onPressed: navigateToLoginView,
-              child: const Text("Already registered? Verify your email here!"))
+            onPressed: navigateToLoginView,
+            child: const Text("Already registered? Verify your email here!"),
+          )
         ],
       ),
     );
@@ -66,10 +69,9 @@ class _RegisterViewState extends State<RegisterView> {
     try {
       final userCredential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
+      dartdev.log(userCredential.toString());
     } on FirebaseAuthException catch (e) {
-      print(e.code);
-    } catch (e) {
-      print(e.runtimeType);
+      dartdev.log(e.code);
     }
   }
 
