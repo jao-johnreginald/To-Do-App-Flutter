@@ -1,8 +1,7 @@
-import 'dart:developer' as dartdev show log;
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:todo_app_flutter/constants/routes.dart';
+import 'package:todo_app_flutter/utils/show_error_dialog.dart';
 
 class RegisterView extends StatefulWidget {
   const RegisterView({super.key});
@@ -56,8 +55,8 @@ class _RegisterViewState extends State<RegisterView> {
             child: const Text("Register"),
           ),
           TextButton(
-            onPressed: navigateToVerifyEmailView,
-            child: const Text("Already registered? Verify your email here!"),
+            onPressed: navigateToLoginView,
+            child: const Text("Already registered? Login here!"),
           )
         ],
       ),
@@ -68,16 +67,23 @@ class _RegisterViewState extends State<RegisterView> {
     final email = _email.text;
     final password = _password.text;
     try {
-      final userCredential = await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(email: email, password: password);
-      dartdev.log(userCredential.toString());
+      final auth = FirebaseAuth.instance;
+      await auth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      await auth.currentUser?.sendEmailVerification();
+      navigateToVerifyEmailView();
     } on FirebaseAuthException catch (e) {
-      dartdev.log(e.code);
+      await showErrorDialog(context, e.code);
     }
   }
 
   void navigateToVerifyEmailView() {
-    Navigator.of(context)
-        .pushNamedAndRemoveUntil(verifyEmailRoute, (_) => false);
+    Navigator.of(context).pushNamed(verifyEmailRoute);
+  }
+
+  void navigateToLoginView() {
+    Navigator.of(context).pushNamedAndRemoveUntil(loginRoute, (_) => false);
   }
 }
