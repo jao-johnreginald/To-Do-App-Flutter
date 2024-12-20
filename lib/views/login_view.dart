@@ -55,7 +55,9 @@ class _LoginViewState extends State<LoginView> {
             child: const Text("Login"),
           ),
           TextButton(
-            onPressed: navigateToRegisterView,
+            onPressed: () {
+              navigate(registerRoute);
+            },
             child: const Text("Not registered yet? Register here!"),
           )
         ],
@@ -67,21 +69,19 @@ class _LoginViewState extends State<LoginView> {
     final email = _email.text;
     final password = _password.text;
     try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
-      navigateToTodosView();
+      final auth = FirebaseAuth.instance;
+      await auth.signInWithEmailAndPassword(email: email, password: password);
+      if (auth.currentUser?.emailVerified ?? false) {
+        navigate(todosRoute);
+      } else {
+        navigate(verifyEmailRoute);
+      }
     } on FirebaseAuthException catch (e) {
-      await showErrorDialog(context, e.code.toUpperCase());
+      await showErrorDialog(context, e.code);
     }
   }
 
-  void navigateToTodosView() {
-    Navigator.of(context).pushNamedAndRemoveUntil(todosRoute, (_) => false);
-  }
-
-  void navigateToRegisterView() {
-    Navigator.of(context).pushNamedAndRemoveUntil(registerRoute, (_) => false);
+  void navigate(String route) {
+    Navigator.of(context).pushNamedAndRemoveUntil(route, (_) => false);
   }
 }
