@@ -1,8 +1,7 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:todo_app_flutter/constants/routes.dart';
-
-enum MenuAction { logout }
+import 'package:todo_app_flutter/enums/menu_action.dart';
+import 'package:todo_app_flutter/services/auth/auth_service.dart';
 
 class TodosView extends StatefulWidget {
   const TodosView({super.key});
@@ -24,7 +23,7 @@ class _TodosViewState extends State<TodosView> {
                 case MenuAction.logout:
                   final shouldLogout = await showLogOutDialog(context);
                   if (shouldLogout) {
-                    await FirebaseAuth.instance.signOut();
+                    await AuthService.firebase().logOut();
                     navigateToLoginView();
                   }
                   break;

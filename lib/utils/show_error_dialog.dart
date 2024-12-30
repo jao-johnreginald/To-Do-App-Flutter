@@ -6,7 +6,7 @@ Future<void> showErrorDialog(BuildContext context, String message) {
     builder: (context) {
       return AlertDialog(
         title: const Text("Task Failed"),
-        content: Text("Error: ${message.toUpperCase()}"),
+        content: Text(message),
         actions: [
           TextButton(
             onPressed: () {
